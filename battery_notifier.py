@@ -45,12 +45,13 @@ def mcu_control_logic(mcu, percent, plugged_status):
     """ The function to control MCU for charging purposes """
 
     if percent >= 100 and plugged_status == True: #100%
-        time.sleep(10) # 5 * 60 SECS
+        print("Waiting for full charge @ 100%")
+        time.sleep(300) # 5 * 60 SECS
         print("Removing charger")
         mcu.write('0'.encode())
         time.sleep(5)
 
-    elif percent <= 50 and plugged_status == False:
+    elif percent <= 65 and plugged_status == False:
         print("Charging On")
         mcu.write('1'.encode())
         time.sleep(5)
