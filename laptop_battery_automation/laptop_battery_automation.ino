@@ -25,20 +25,20 @@ void loop() {
 
   data = Serial.readString(); // incomingByte = Serial.parseInt();
   incomingByte = data.toInt();
-  
+
   if (incomingByte == 1 and prevByte != incomingByte) {
     digitalWrite(D0, HIGH);
     digitalWrite(D2, LOW);
     digitalWrite(D5, LOW);
     prevByte = incomingByte;
-    }
+  }
 
-    if (incomingByte == 0 and prevByte != incomingByte) {
+  if (incomingByte == 0 and prevByte != incomingByte) {
     digitalWrite(D2, HIGH);
     digitalWrite(D0, LOW);
     digitalWrite(D5, HIGH);
     prevByte = incomingByte;
-    }
+  }
 
-  
+
 }
