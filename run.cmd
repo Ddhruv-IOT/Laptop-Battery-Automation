@@ -1,0 +1,2 @@
+python battery_notifier.py
+PAUSE
