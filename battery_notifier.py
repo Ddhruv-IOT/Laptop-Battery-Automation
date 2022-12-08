@@ -8,6 +8,10 @@ Created on Sat Nov 19 22:22:55 2022
 import psutil
 import time
 import serial_connect
+import serial.tools.list_ports
+
+TURN_ON_THRESH = 50
+TURN_OFF_THRESH = 100
 
 def convertTime(seconds):
     """ Function to cvonvert seconds into HH:MM:S format """
@@ -44,15 +48,23 @@ def get_battery_status():
 def mcu_control_logic(mcu, percent, plugged_status):
     """ The function to control MCU for charging purposes """
 
-    if percent >= 100 and plugged_status == True: #100%
+    if TURN_OFF_THRESH == 100 and percent >= TURN_OFF_THRESH and plugged_status == True: #100%
         print("Waiting for full charge @ 100%")
         time.sleep(300) # 5 * 60 SECS
         print("Removing charger")
+        print()
         mcu.write('0'.encode())
         time.sleep(5)
 
-    elif percent <= 65 and plugged_status == False:
-        print("Charging On")
+    elif percent >= TURN_OFF_THRESH and plugged_status == True:
+        print(f"Removing charger, Treshold reached @ {TURN_OFF_THRESH}")
+        print()
+        mcu.write('0'.encode())
+        time.sleep(5)
+
+    elif percent <= TURN_ON_THRESH and plugged_status == False:
+        print(f"Charging On, Treshold Reached @ {TURN_ON_THRESH}")
+        print()
         mcu.write('1'.encode())
         time.sleep(5)
 
@@ -66,6 +78,10 @@ try:
         display_info(percent, plugged_status, time_left)
         mcu_control_logic(mcu, percent, plugged_status)
         time.sleep(5)
+
+except serial.serialutil.SerialException as e:
+    print("The port is already at use kindly stop the script and reconnect the device and run again")
+    print(e)
 
 except Exception as e:
     print(e)
