@@ -36,15 +36,16 @@ def connect_port():
     mcu = serial.Serial(port=port_list[0], baudrate=9600)
     return mcu
 
-# try:
-#     mcu = connect_port()
+if __name__ == "__main__":
+    try:
+        mcu = connect_port()
 
-#     while 1:
-#         mcu.write('1'.encode())
-#         time.sleep(5)
-#         mcu.write('0'.encode())
-#         time.sleep(5)
+        while 1:
+            mcu.write('1'.encode())
+            time.sleep(5)
+            mcu.write('0'.encode())
+            time.sleep(5)
 
-# except serial.serialutil.SerialException:
-#     print("The port is at use")
-#     mcu.close()
+    except serial.serialutil.SerialException:
+        print("The port is at use")
+        # mcu.close()
