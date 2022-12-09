@@ -9,9 +9,11 @@ import psutil
 import time
 import serial_connect
 import serial.tools.list_ports
+import error_statements as er
 
 TURN_ON_THRESH = 50
 TURN_OFF_THRESH = 100
+
 
 def convertTime(seconds):
     """ Function to cvonvert seconds into HH:MM:S format """
@@ -19,6 +21,7 @@ def convertTime(seconds):
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     return "%d:%02d:%02d" % (hours, minutes, seconds)
+
 
 def display_info(percent, plugged_status, time_left):
     """ A simple function to display the availabel information """
@@ -34,6 +37,7 @@ def display_info(percent, plugged_status, time_left):
     print("Battery left       : ", time_left)
     print()
 
+
 def get_battery_status():
     """ The core function to get battery levels and charger status """
 
@@ -45,12 +49,13 @@ def get_battery_status():
 
     return percent, plugged_status, time_left
 
+
 def mcu_control_logic(mcu, percent, plugged_status):
     """ The function to control MCU for charging purposes """
 
-    if TURN_OFF_THRESH == 100 and percent >= TURN_OFF_THRESH and plugged_status == True: #100%
+    if TURN_OFF_THRESH == 100 and percent >= TURN_OFF_THRESH and plugged_status == True:  # 100%
         print("Waiting for full charge @ 100%")
-        time.sleep(300) # 5 * 60 SECS
+        time.sleep(300)  # 5 * 60 SECS
         print("Removing charger")
         print()
         mcu.write('0'.encode())
@@ -74,14 +79,22 @@ try:
 
     while 1:
 
+        mcu.write('9'.encode())
         percent, plugged_status, time_left = get_battery_status()
         display_info(percent, plugged_status, time_left)
         mcu_control_logic(mcu, percent, plugged_status)
         time.sleep(5)
 
+except TypeError as e:
+    print(er.no_usb, e)
+
 except serial.serialutil.SerialException as e:
-    print("The port is already at use kindly stop the script and reconnect the device and run again")
-    print(e)
+    print(er.serial_err, e)
+    try:
+        mcu.close()
+        print("\nConnection closed, safely remove the device.")
+    except:
+        pass
 
 except Exception as e:
     print(e)
