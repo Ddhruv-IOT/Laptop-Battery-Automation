@@ -25,9 +25,9 @@ def find_ports():
         print()
         ports_found.append(port)
 
-
     if len(ports_found) != 0:
         return ports_found
+
 
 def connect_port():
     """ Function to connect with the desired MCU over serial COM port """
@@ -35,6 +35,7 @@ def connect_port():
     port_list = find_ports()
     mcu = serial.Serial(port=port_list[0], baudrate=9600)
     return mcu
+
 
 if __name__ == "__main__":
     try:
