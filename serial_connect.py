@@ -46,6 +46,6 @@ if __name__ == "__main__":
             mcu.write('0'.encode())
             time.sleep(5)
 
-    except serial.serialutil.SerialException:
-        print("The port is at use")
+    except serial.serialutil.SerialException as e:
+        print(f"The Error: {e}")
         # mcu.close()
