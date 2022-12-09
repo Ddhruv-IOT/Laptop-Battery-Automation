@@ -55,17 +55,28 @@ def mcu_control_logic(mcu, percent, plugged_status):
 
     if TURN_OFF_THRESH == 100 and percent >= TURN_OFF_THRESH and plugged_status == True:  # 100%
         print("Waiting for full charge @ 100%")
-        time.sleep(300)  # 5 * 60 SECS
+        time.sleep(3)  # 5 * 60 SECS
         print("Removing charger")
         print()
         mcu.write('0'.encode())
         time.sleep(5)
+
+        while 1:
+            percent, plugged_status, time_left = get_battery_status()
+            if plugged_status != True:
+                print("Thanks for turning it off! \n")
+                break
+            print("Its possible bypass switch is ON \n")
+            time.sleep(5)
 
     elif percent >= TURN_OFF_THRESH and plugged_status == True:
         print(f"Removing charger, Treshold reached @ {TURN_OFF_THRESH}")
         print()
         mcu.write('0'.encode())
         time.sleep(5)
+
+        if plugged_status == True:
+            print("Its possible bypass switch is ON \n")
 
     elif percent <= TURN_ON_THRESH and plugged_status == False:
         print(f"Charging On, Treshold Reached @ {TURN_ON_THRESH}")
