@@ -10,7 +10,7 @@ import serial.tools.list_ports
 import time
 
 
-def find_ports():
+def find_ports(display=False):
     """ A function to find aval. COM Ports """
 
     ports = serial.tools.list_ports.comports()
@@ -18,22 +18,23 @@ def find_ports():
     ports_found = []
 
     for port, desc, hwid in sorted(ports):
-        print()
-        print(f"Port Name  : {port}")
-        print(f"Port Desc  : {desc}")
-        print(f"Port ID    : {hwid}")
-        print()
+        if display:
+            print()
+            print(f"Port Name  : {port}")
+            print(f"Port Desc  : {desc}")
+            print(f"Port ID    : {hwid}")
+            print()
         ports_found.append(port)
 
     if len(ports_found) != 0:
         return ports_found
 
 
-def connect_port():
+def connect_port(display=False, baud=9600):
     """ Function to connect with the desired MCU over serial COM port """
 
-    port_list = find_ports()
-    mcu = serial.Serial(port=port_list[0], baudrate=9600)
+    port_list = find_ports(display)
+    mcu = serial.Serial(port=port_list[0], baudrate=baud)
     return mcu
 
 
