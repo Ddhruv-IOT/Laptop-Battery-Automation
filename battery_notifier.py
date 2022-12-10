@@ -88,8 +88,29 @@ def mcu_control_logic(mcu, percent, plugged_status):
         time.sleep(5)
 
 
+def thresh_valiadte(TURN_ON_THRESH, TURN_OFF_THRESH):
+    """ A function to validate Turn On and Turn Off thresholds """
+
+    if TURN_ON_THRESH <= 100 and TURN_ON_THRESH >= 5:
+        pass
+    else:
+        raise ValueError("Turn ON threshold should be between 5 - 100 \n")
+
+    if TURN_OFF_THRESH <= 100 and TURN_OFF_THRESH >= 5:
+        pass
+    else:
+        raise ValueError("Turn OFF threshold should be between 5 - 100 \n")
+
+    if (TURN_OFF_THRESH - TURN_ON_THRESH) >= 20:
+        pass
+    else:
+        raise ValueError("There should be minimium gap of 20% between Turn ON and OFF thresholds \n")
+
+
 try:
-    mcu = serial_connect.connect_port(display=False, baud=9600)
+    thresh_valiadte(TURN_ON_THRESH, TURN_OFF_THRESH)
+    mcu = serial_connect.connect_port(display=True, baud=9600)
+    print()
 
     while 1:
 
