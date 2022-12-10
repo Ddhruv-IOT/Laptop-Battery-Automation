@@ -12,7 +12,7 @@ import serial.tools.list_ports
 import error_statements as er
 
 TURN_ON_THRESH = 50
-TURN_OFF_THRESH = 100
+TURN_OFF_THRESH = 90
 
 
 def convertTime(seconds):
@@ -121,6 +121,9 @@ try:
         mcu.write('9'.encode())
         time.sleep(2.5)
 
+except ValueError as e:
+    print(er.val, e)
+
 except TypeError as e:
     print(er.no_usb, e)
 
@@ -133,4 +136,4 @@ except serial.serialutil.SerialException as e:
         pass
 
 except Exception as e:
-    print(e)
+    print(er.unknown_err, e)
