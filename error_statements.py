@@ -23,6 +23,20 @@ serial_err = """It's likely that you removed the tracker and reconnected it!!
 
 """
 
+val = """It's likely a threshold based error!!
+
+ ************************************
+ Keep turn On and Off thresholds
+ between 5 to 100
+ Make sure there is difference of
+ 20% between Turn Off and Turn on
+ Threshold.
+ ************************************
+
+---------------- FULL ERROR ----------------
+
+"""
+
 
 unknown_err = """We don't know it yet, if you know what happened, kindly share wit us.
 
