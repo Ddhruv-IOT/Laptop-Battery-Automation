@@ -89,11 +89,10 @@ def mcu_control_logic(mcu, percent, plugged_status):
 
 
 try:
-    mcu = serial_connect.connect_port()
+    mcu = serial_connect.connect_port(display=False, baud=9600)
 
     while 1:
 
-        
         percent, plugged_status, time_left = get_battery_status()
         display_info(percent, plugged_status, time_left)
         mcu_control_logic(mcu, percent, plugged_status)
