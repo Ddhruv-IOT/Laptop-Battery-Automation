@@ -4,18 +4,17 @@ Created on Sat Nov 19 22:22:55 2022
 
 @author: ACER
 """
-
-import psutil
 import time
+import psutil
 import serial_connect
 import serial.tools.list_ports
 import error_statements as er
 
 TURN_ON_THRESH = 50
-TURN_OFF_THRESH = 90
+TURN_OFF_THRESH = 100
 
 
-def convertTime(seconds):
+def convert_time(seconds):
     """ Function to cvonvert seconds into HH:MM:S format """
 
     minutes, seconds = divmod(seconds, 60)
@@ -26,10 +25,10 @@ def convertTime(seconds):
 def display_info(percent, plugged_status, time_left):
     """ A simple function to display the availabel information """
 
-    if plugged_status == True:
+    if plugged_status is True:
         time_left = "PC is on Charge"
 
-    if plugged_status == False and int(time_left.split(":")[0]) >= 12:
+    if plugged_status is False and int(time_left.split(":")[0]) >= 12:
         time_left = "Estimating..."
 
     print("Battery percentage : ", percent)
@@ -45,7 +44,7 @@ def get_battery_status():
 
     percent = battery.percent
     plugged_status = battery.power_plugged
-    time_left = convertTime(battery.secsleft)
+    time_left = convert_time(battery.secsleft)
 
     return percent, plugged_status, time_left
 
@@ -53,7 +52,7 @@ def get_battery_status():
 def mcu_control_logic(mcu, percent, plugged_status):
     """ The function to control MCU for charging purposes """
 
-    if TURN_OFF_THRESH == 100 and percent >= TURN_OFF_THRESH and plugged_status == True:  # 100%
+    if TURN_OFF_THRESH == 100 and percent >= TURN_OFF_THRESH and plugged_status is True:  # 100%
         print("Waiting for full charge @ 100%")
         time.sleep(300)  # 5 * 60 SECS
         print("Removing charger")
@@ -63,12 +62,12 @@ def mcu_control_logic(mcu, percent, plugged_status):
 
         while 1:
             percent, plugged_status, time_left = get_battery_status()
-            if plugged_status != True:
+            if plugged_status is not True:
                 break
             print("Its possible bypass switch is ON \n")
             time.sleep(5)
 
-    elif percent >= TURN_OFF_THRESH and plugged_status == True:
+    elif percent >= TURN_OFF_THRESH and plugged_status is True:
         print(f"Removing charger, Treshold reached @ {TURN_OFF_THRESH}")
         print()
         mcu.write('0'.encode())
@@ -76,35 +75,35 @@ def mcu_control_logic(mcu, percent, plugged_status):
 
         while 1:
             percent, plugged_status, time_left = get_battery_status()
-            if plugged_status != True:
+            if plugged_status is not True:
                 break
             print("Its possible bypass switch is ON \n")
             time.sleep(5)
 
-    elif percent <= TURN_ON_THRESH and plugged_status == False:
+    elif percent <= TURN_ON_THRESH and plugged_status is False:
         print(f"Charging On, Treshold Reached @ {TURN_ON_THRESH}")
         print()
         mcu.write('1'.encode())
         time.sleep(5)
 
 
-def thresh_valiadte(TURN_ON_THRESH, TURN_OFF_THRESH):
+def thresh_valiadte(turn_on_thresh, turn_off_thresh):
     """ A function to validate Turn On and Turn Off thresholds """
 
-    if TURN_ON_THRESH <= 100 and TURN_ON_THRESH >= 5:
+    if 5 <= turn_on_thresh <= 100:
         pass
     else:
         raise ValueError("Turn ON threshold should be between 5 - 100 \n")
 
-    if TURN_OFF_THRESH <= 100 and TURN_OFF_THRESH >= 5:
+    if 5 <= turn_off_thresh <= 100:
         pass
     else:
         raise ValueError("Turn OFF threshold should be between 5 - 100 \n")
 
-    if (TURN_OFF_THRESH - TURN_ON_THRESH) >= 20:
+    if (turn_off_thresh - turn_on_thresh) >= 20:
         pass
     else:
-        raise ValueError("There should be minimium gap of 20% between Turn ON and OFF thresholds \n")
+        raise ValueError("There should be minimium gap of 20% between Turn ON and OFF thresholds\n")
 
 
 try:
@@ -122,18 +121,18 @@ try:
         time.sleep(2.5)
 
 except ValueError as e:
-    print(er.val, e)
+    print(er.VAL_ERR, e)
 
 except TypeError as e:
-    print(er.no_usb, e)
+    print(er.NO_USB, e)
 
 except serial.serialutil.SerialException as e:
-    print(er.serial_err, e)
+    print(er.SERIAL_ERR, e)
     try:
         mcu.close()
         print("\nConnection closed, safely remove the device.")
-    except:
+    except Exception:
         pass
 
 except Exception as e:
-    print(er.unknown_err, e)
+    print(er.UNKNOWN_ERR, e)
