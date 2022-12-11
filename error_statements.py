@@ -1,4 +1,6 @@
-no_usb = """It's likely that the tracker is not yet connected!!
+""" A simple module to prvide solutions to errors raised during execution """
+
+NO_USB = """It's likely that the tracker is not yet connected!!
 
  ************************************
  Did you forget to connect tracker ??
@@ -10,7 +12,7 @@ no_usb = """It's likely that the tracker is not yet connected!!
 """
 
 
-serial_err = """It's likely that you removed the tracker and reconnected it!!
+SERIAL_ERR = """It's likely that you removed the tracker and reconnected it!!
 
  ************************************
  Disconnect the tracker and reconnect
@@ -23,7 +25,7 @@ serial_err = """It's likely that you removed the tracker and reconnected it!!
 
 """
 
-val = """It's likely a threshold based error!!
+VAL_ERR = """It's likely a threshold based error!!
 
  ************************************
  Keep turn On and Off thresholds
@@ -38,7 +40,7 @@ val = """It's likely a threshold based error!!
 """
 
 
-unknown_err = """We don't know it yet, if you know what happened, kindly share wit us.
+UNKNOWN_ERR = """We don't know it yet, if you know what happened, kindly share wit us.
 
  ***************************************
  Email the steps to reproduce the error
