@@ -39,6 +39,23 @@ VAL_ERR = """It's likely a threshold based error!!
 
 """
 
+PORT_ERR = """It's likely you entered incorrect port!!
+
+ ************************************
+ Restart the program, remove any other
+ USB devices or write the COM Num
+ correctly. Its possilbe that if you
+ enter other COM Num, code might run
+ but won't be able to control charge.
+ So, we recommend removing all devices
+ except for the tracker to make the
+ process easy.
+ ************************************
+
+---------------- FULL ERROR ----------------
+
+"""
+
 
 UNKNOWN_ERR = """We don't know it yet, if you know what happened, kindly share wit us.
 
