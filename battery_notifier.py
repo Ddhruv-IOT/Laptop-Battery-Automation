@@ -103,7 +103,8 @@ def thresh_valiadte(turn_on_thresh, turn_off_thresh):
     if (turn_off_thresh - turn_on_thresh) >= 20:
         pass
     else:
-        raise ValueError("There should be minimium gap of 20% between Turn ON and OFF thresholds\n")
+        raise ValueError(
+            "There should be minimium gap of 20% between Turn ON and OFF thresholds\n")
 
 
 try:
