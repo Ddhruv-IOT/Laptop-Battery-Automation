@@ -31,11 +31,32 @@ def find_ports(display=False):
     raise TypeError("No Device Error, Empty COM Port!!\n")
 
 
-def connect_port(display=False, baud=9600):
-    """ Function to connect with the desired MCU over serial COM port """
+def select_port(display=False):
+    """ Function to choose the COM port """
 
     port_list = find_ports(display)
-    mcu_connected = serial.Serial(port=port_list[0], baudrate=baud)
+
+    if port_list:
+
+        if len(port_list) == 1:
+            port = port_list[0]
+
+        else:
+            print(
+                f"Multiple ports detected, select the desired one\n {port_list} \n")
+            port = input("Enter the selected port: ")
+
+            if port not in port_list:
+                raise NameError("Terminating, port not found. Try Again!!")
+
+    return port
+
+
+def connect_port(display=False, baud=9600):
+    """ Function to connect MCU over selected serial COM port """
+
+    port = select_port(display)
+    mcu_connected = serial.Serial(port=port, baudrate=baud)
     return mcu_connected
 
 
