@@ -126,6 +126,9 @@ except ValueError as e:
 except TypeError as e:
     print(er.NO_USB, e)
 
+except NameError as e:
+    print(er.PORT_ERR, e)
+
 except serial.serialutil.SerialException as e:
     print(er.SERIAL_ERR, e)
     try:
