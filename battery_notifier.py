@@ -13,6 +13,8 @@ import error_statements as er
 TURN_ON_THRESH = 50
 TURN_OFF_THRESH = 100
 
+counter = [0]
+
 
 def convert_time(seconds):
     """ Function to cvonvert seconds into HH:MM:S format """
@@ -47,7 +49,6 @@ def get_battery_status():
     time_left = convert_time(battery.secsleft)
 
     return percent, plugged_status, time_left
-
 
 def mcu_control_logic(mcu, percent, plugged_status):
     """ The function to control MCU for charging purposes """
@@ -85,6 +86,14 @@ def mcu_control_logic(mcu, percent, plugged_status):
         print()
         mcu.write('1'.encode())
         time.sleep(5)
+        counter[0] += 1
+
+        if counter[0] >= 3 and plugged_status is False:
+            print("It's possible power adapter is not yet turned on. \n")
+
+    if plugged_status is True:
+        counter[0] = 0
+
 
 
 def thresh_valiadte(turn_on_thresh, turn_off_thresh):
