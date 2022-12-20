@@ -10,8 +10,8 @@ import serial_connect
 import serial.tools.list_ports
 import error_statements as er
 
-TURN_ON_THRESH = 50
-TURN_OFF_THRESH = 100
+TURN_ON_THRESH = 45
+TURN_OFF_THRESH = 90
 
 counter = [0]
 
